@@ -2,16 +2,16 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-batch_size = 8
-block_size = 64
+batch_size = 64
+block_size = 256
 max_iters = 5000
 eval_interval = 500
-eval_iters = 200
-learning_rate = 1e-3
+learning_rate = 3e-4
 device = "cuda" if torch.cuda.is_available() else "cpu"
-n_embd = 64
-n_head = 2
-n_layer = 2
+eval_iters = 200
+n_embd = 384
+n_head = 6
+n_layer = 6
 dropout = 0.2
 
 with open("input.txt", "r", encoding="utf-8") as f:
@@ -180,3 +180,5 @@ for iter in range(max_iters):
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 
 print(decode(m.generate(context, max_new_tokens=1000)[0].tolist()))
+
+torch.save(m.state_dict(), "model.pt")
